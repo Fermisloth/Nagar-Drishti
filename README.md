@@ -29,29 +29,22 @@ UrbanMind is an intelligent backend platform designed to transform how cities ha
 
 ---
 
-## 🏗️ System Architecture
-
-```text
-  [ Citizen Complaint ] 
-          │
-          ▼
-    ┌───────────┐
-    │  FastAPI  │ 
-    └─────┬─────┘
-          │
-     ┌────┴──────────────────────────┐
-     ▼                               ▼
-┌───────────────┐           ┌──────────────────┐
-│  Gemini AI    │           │  Gemini Embeddings│
-│ (Structuring) │           │ (768-dim Vectors) │
-└───────┬───────┘           └────────┬─────────┘
-        │                            │
-        │                            ▼
-        │                   ┌──────────────────┐
-        │                   │  Qdrant Vector DB │ ──► (Duplicate Check)
-        │                   └──────────────────┘
-        ▼
-┌──────────────────┐
-│ PostgreSQL DB    │
-│ (Relational Data)│
-└──────────────────┘
+##flowchart TD
+    %% Input Layer
+    A[Citizen Input: Voice / Text\n20+ Indian Languages] --> B[Whisper Speech-to-Text & Lang Detect]
+    
+    %% AI Intelligence Layer
+    B --> C[Gemini LLM: Semantic Parsing]
+    C --> D[OpenStreetMap: Geo Coordinate Extraction]
+    D --> E[Qdrant Vector DB: Duplicate Clustering]
+    
+    %% Decision & Routing
+    E --> F[Priority & SLA Risk Prediction]
+    F --> G[Department Routing + Confidence Score]
+    
+    %% Output & Knowledge Graph
+    G --> H[Officer Copilot Briefing]
+    G --> I[(Neo4j Urban Knowledge Graph)]
+    
+    I --> J[Budgets, Contractors, Infrastructure Assets]
+    H --> K[Actionable Decision Dashboard]
