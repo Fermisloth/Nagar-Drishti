@@ -29,7 +29,7 @@ UrbanMind is an intelligent backend platform designed to transform how cities ha
 
 ---
 
-##flowchart TD
+flowchart TD
     %% Input Layer
     A[Citizen Input: Voice / Text\n20+ Indian Languages] --> B[Whisper Speech-to-Text & Lang Detect]
     
