@@ -7,13 +7,13 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
 > **An AI-Powered Urban Grievance Intelligence Platform**  
-> An intelligence layer that transforms fragmented citizen complaints into actionable urban knowledge—enabling faster municipal decisions, better governance, and smarter cities.
+> An intelligence layer that transforms fragmented citizen complaints into actionable urban knowledgeï¿½enabling faster municipal decisions, better governance, and smarter cities.
 
 ---
 
 ## ?? Overview
 
-India’s cities generate millions of citizen grievances every year across platforms like CPGRAMS and state municipal portals. Existing systems focus on **complaint management** (tickets and status tracking), but lack **semantic understanding and duplicate clustering**. 
+Indiaï¿½s cities generate millions of citizen grievances every year across platforms like CPGRAMS and state municipal portals. Existing systems focus on **complaint management** (tickets and status tracking), but lack **semantic understanding and duplicate clustering**. 
 
 **UrbanMind AI** acts as a non-disruptive **Cognitive Intelligence Layer** that sits on top of existing government infrastructure to understand citizen intent, route issues accurately, group duplicates, and deliver actionable briefings to officers.
 
