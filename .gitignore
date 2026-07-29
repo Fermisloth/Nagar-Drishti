@@ -91,3 +91,31 @@ Desktop.ini
 # Docker
 # ==============================
 docker-compose.override.yml
+
+# ==============================
+# Python tooling
+# ==============================
+
+.nox/
+.tox/
+.hypothesis/
+.ipynb_checkpoints/
+.pytype/
+.dmypy.json
+dmypy.json
+# ==============================
+# Misc local cache
+# ==============================
+
+.cache/
+tmp/
+# ==============================
+# macOS resource forks
+# ==============================
+
+._*
+# ==============================
+# Python version managers
+# ==============================
+
+.python-version
