@@ -5,6 +5,8 @@ from app.core.config import settings
 from app.core.qdrant import qdrant_storage
 from app.core.database import engine, Base
 from app.api.v1.router import api_router
+from app.middleware.security import SecurityHeadersMiddleware
+from app.middleware.rate_limit import RateLimiterMiddleware
 # Import models to ensure they register with Base.metadata before creation
 import app.models  
 import logging
@@ -34,6 +36,12 @@ app = FastAPI(
     openapi_url="/api/v1/openapi.json",
     lifespan=lifespan
 )
+
+# Apply Security Header middleware first
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Apply Rate Limiter middleware (100 requests per 60 seconds)
+app.add_middleware(RateLimiterMiddleware, limit=100, window_seconds=60)
 
 app.add_middleware(
     CORSMiddleware,

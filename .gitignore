@@ -119,3 +119,12 @@ tmp/
 # ==============================
 
 .python-version
+
+# ==============================
+# Context Pack
+# ==============================
+NagarDrishti_AI_Context_Pack/
+UrbanMind_AI_Context_Pack.zip
+project_history/
+
+folder_structure.txt

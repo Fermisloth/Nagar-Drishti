@@ -27,6 +27,9 @@ class Settings(BaseSettings):
     # AI Configuration
     GEMINI_API_KEY: str
 
+    # Security Configuration
+    OFFICER_API_KEY: str = "urbanmind_secret_token"
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 
 settings = Settings()
