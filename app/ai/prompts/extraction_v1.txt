@@ -1,0 +1,8 @@
+Extract the following fields from the citizen complaint text below:
+- issue_type: The type of civic issue (e.g. Pothole, Water Leakage, Garbage Dumping, Streetlight Broken, Power Cut)
+- department: The municipal department responsible (e.g. Roads & Maintenance, Water Supply & Sewage, Sanitation & Waste, Electricity & Streetlights)
+- priority: Assessment of priority (High, Medium, Low)
+- location: Mentioned location details or landmarks, if any.
+- summary: A 1-sentence clean summary of the complaint.
+
+Complaint Text: "{raw_text}"
