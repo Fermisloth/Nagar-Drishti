@@ -5,23 +5,36 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from app.core.config import settings
 from app.exceptions.base import SecurityException
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+
+# Argon2 password hasher instance
+ph = PasswordHasher(
+    time_cost=getattr(settings, "ARGON2_TIME_COST", 2),
+    memory_cost=getattr(settings, "ARGON2_MEMORY_COST", 102400),
+    parallelism=1,
+    hash_len=32,
+    salt_len=16,
+)
 
 ALGORITHM = "HS256"
 
 def hash_password(password: str) -> str:
-    """Hash password using SHA-256 with salt."""
-    salt = os.urandom(16).hex()
-    hashed = hashlib.sha256((salt + password).encode("utf-8")).hexdigest()
-    return f"{salt}${hashed}"
+    """Hash a password using Argon2id via the configured hasher."""
+    return ph.hash(password)
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password against salt+hash string."""
+    """Verify a password against an Argon2id hash.
+
+    Returns ``True`` if the password matches, ``False`` otherwise.
+    """
     try:
-        salt, stored_hash = hashed_password.split("$")
-        computed_hash = hashlib.sha256((salt + plain_password).encode("utf-8")).hexdigest()
-        return stored_hash == computed_hash
-    except Exception:
+        return ph.verify(hashed_password, plain_password)
+    except VerifyMismatchError:
         return False
+    except Exception as exc:
+        raise SecurityException(f"Password verification failed: {exc}", status_code=401)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Generate JWT Access Token."""

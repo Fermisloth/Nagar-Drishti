@@ -13,8 +13,8 @@ class Incident(Base):
     priority = Column(String, nullable=False, default="Medium")
     location = Column(String, nullable=True)
     summary = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now(), index=True)
 
     # Relationship linking back to individual raw complaints
     complaints = relationship("Complaint", back_populates="incident", cascade="all, delete-orphan")

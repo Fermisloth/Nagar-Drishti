@@ -3,6 +3,8 @@ import json
 import time
 from datetime import datetime
 
+from app.middleware.correlation import get_correlation_id
+
 class JsonFormatter(logging.Formatter):
     """Custom logging Formatter that outputs logs in JSON format."""
     def format(self, record: logging.LogRecord) -> str:
@@ -10,6 +12,7 @@ class JsonFormatter(logging.Formatter):
             "timestamp": datetime.utcfromtimestamp(record.created).isoformat() + "Z",
             "level": record.levelname,
             "logger": record.name,
+            "correlation_id": get_correlation_id(),
             "message": record.getMessage(),
             "module": record.module,
             "func_name": record.funcName,

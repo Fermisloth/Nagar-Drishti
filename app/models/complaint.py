@@ -12,7 +12,7 @@ class Complaint(Base):
     image_url = Column(String, nullable=True)
     
     # Foreign key link to grouped Incident
-    incident_id = Column(String, ForeignKey("incidents.id"), nullable=True)
+    incident_id = Column(String, ForeignKey("incidents.id"), nullable=True, index=True)
     
     # Raw JSON extraction output from Gemini stored for auditability
     extracted_metadata = Column(JSON, nullable=True)

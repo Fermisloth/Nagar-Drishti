@@ -4,6 +4,7 @@ from typing import List
 from app.core.database import get_db
 from app.schemas.complaint import ComplaintCreate, ComplaintResponse
 from app.services.incident_service import IncidentService
+from app.utils.sanitizer import sanitize_input_text
 
 router = APIRouter()
 
@@ -17,6 +18,11 @@ async def submit_complaint(
     Extracts semantic metadata and clusters under an Incident using Qdrant similarity.
     """
     try:
+        # Sanitize text strings to mitigate stored XSS injections
+        complaint_in.raw_text = sanitize_input_text(complaint_in.raw_text)
+        if complaint_in.location:
+            complaint_in.location = sanitize_input_text(complaint_in.location)
+            
         complaint = await IncidentService.process_new_complaint(db, complaint_in)
         return complaint
     except Exception as e:
