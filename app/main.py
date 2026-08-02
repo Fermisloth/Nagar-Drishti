@@ -5,11 +5,15 @@ from app.core.config import settings
 from app.core.qdrant import qdrant_storage
 from app.core.database import engine, Base
 from app.api.v1.router import api_router
+from app.middleware.security import SecurityHeadersMiddleware
+from app.middleware.rate_limit import RateLimiterMiddleware
+from app.middleware.correlation import CorrelationIdMiddleware
+from app.core.logging_config import configure_logging
 # Import models to ensure they register with Base.metadata before creation
 import app.models  
 import logging
 
-logging.basicConfig(level=logging.INFO)
+configure_logging("INFO")
 logger = logging.getLogger("urbanmind")
 
 @asynccontextmanager
@@ -34,6 +38,15 @@ app = FastAPI(
     openapi_url="/api/v1/openapi.json",
     lifespan=lifespan
 )
+
+# Apply Correlation ID middleware first to trace log lines early
+app.add_middleware(CorrelationIdMiddleware)
+
+# Apply Security Header middleware second
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Apply Rate Limiter middleware (100 requests per 60 seconds)
+app.add_middleware(RateLimiterMiddleware, limit=100, window_seconds=60)
 
 app.add_middleware(
     CORSMiddleware,

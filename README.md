@@ -1,44 +1,130 @@
-# UrbanMind AI ????
+# UrbanMind AI 🏙️
 
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![Qdrant](https://img.shields.io/badge/Qdrant-Vector_DB-red?style=for-the-badge)
-![Gemini AI](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=for-the-badge&logo=google)
-![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Vector_DB-red?style=for-the-badge)](https://qdrant.tech)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=for-the-badge&logo=google)](https://deepmind.google/technologies/gemini/)
+[![Security](https://img.shields.io/badge/Security-Hardened-green?style=for-the-badge)](#security-layer)
 
-> **An AI-Powered Urban Grievance Intelligence Platform**  
-> An intelligence layer that transforms fragmented citizen complaints into actionable urban knowledge�enabling faster municipal decisions, better governance, and smarter cities.
-
----
-
-## ?? Overview
-
-India�s cities generate millions of citizen grievances every year across platforms like CPGRAMS and state municipal portals. Existing systems focus on **complaint management** (tickets and status tracking), but lack **semantic understanding and duplicate clustering**. 
-
-**UrbanMind AI** acts as a non-disruptive **Cognitive Intelligence Layer** that sits on top of existing government infrastructure to understand citizen intent, route issues accurately, group duplicates, and deliver actionable briefings to officers.
+UrbanMind AI is a smart **Cognitive Intelligence Layer** designed to optimize how municipal corporations handle citizen complaints. By understanding what complaints mean (rather than just matching words) and grouping duplicates, it helps city officers react faster and work smarter.
 
 ---
 
-## ?? Key Features
+## 🌟 Simple Explanation (For Non-Technical Readers)
 
-* ?? **Multilingual AI Structuring:** Parses raw text or voice inputs in 20+ Indian languages using **Whisper** and **Gemini 1.5 Flash** to extract categories, locations, and urgency scores.
-* ?? **Vector Duplicate Clustering:** Embeds complaint descriptions into 768-dimensional vector space via **Gemini `text-embedding-004`** and local **Qdrant** to group dozens of redundant reports into single actionable incidents.
-* ?? **Officer Copilot:** Replaces hundreds of raw individual reports with a single structured AI intelligence brief containing suggested actions and routing confidence scores.
-* ?? **Urban Knowledge Graph:** Connects complaints to specific infrastructure assets, contractors, ward budgets, and maintenance histories using **Neo4j**.
-* ?? **Predictive SLA Analytics:** Identifies high-risk complaints likely to breach resolution deadlines before failure occurs.
+### The Problem
+When citizens report issues in a city (like a broken pipe or a pothole), many people report the exact same problem using different words, in different languages. A city officer gets flooded with hundreds of separate tickets for the same physical pothole. Sorting through them manually takes days, stalling repairs.
+
+### The Solution: UrbanMind AI
+UrbanMind AI acts as a **smart assistant** that listens to citizens, translates and extracts key details automatically, and cleans up the mess:
+1. **Reads complaints in any language:** (e.g. Hindi, English, Tamil) and understands the core issue.
+2. **Recognizes duplicates:** If 20 people complain about the same water leak, it links all of them to **one master incident file**.
+3. **Prioritizes automatically:** It flags urgent issues (like sewage flooding near a hospital) and notifies the right department immediately.
+4. **Protects itself:** It blocks malicious activity and ensures only authorized officers can view private city data.
 
 ---
 
-## ??? 10-Stage AI Pipeline Architecture
+## 🛠️ Architecture & Tech Stack (For Experts)
 
-```mermaid
-flowchart TD
-    A["1. Citizen Input (Voice / Text)"] --> B["2. Language Detection & Whisper STT"]
-    B --> C["3. Gemini LLM Semantic Parsing"]
-    C --> D["4. OpenStreetMap Geo Coordinate Extraction"]
-    D --> E["5. Qdrant Vector DB Duplicate Clustering"]
-    E --> F["6. Priority & SLA Risk Prediction"]
-    F --> G["7. Department Routing + Confidence Score"]
-    G --> H["8. Officer Copilot Briefing"]
-    G --> I["9. Neo4j Urban Knowledge Graph"]
-    I --> J["10. Actionable Decision Dashboard"]
+UrbanMind AI separates business logic, AI operations, and database infrastructure to maintain scalability and maintainability.
+
+```
+                  ┌──────────────────────┐
+                  │   Citizen Portal     │
+                  └──────────┬───────────┘
+                             │ (Complaints Input)
+                             ▼
+ ┌────────────────────────────────────────────────────────┐
+ │                   FastAPI Backend                      │
+ │                                                        │
+ │ ┌──────────────────┐             ┌───────────────────┐ │
+ │ │ Security Headers │             │ Rate Limiter (IP) │ │
+ │ └─────────┬────────┘             └─────────┬─────────┘ │
+ │           └─────────────────┬──────────────┘           │
+ │                             ▼                          │
+ │                       API Endpoints                    │
+ │            (Validated via schemas/ Pydantic)           │
+ │                             │                          │
+ │                             ▼                          │
+ │                    Business Services                   │
+ │                             │                          │
+ │          ┌──────────────────┼──────────────────┐       │
+ │          ▼                  ▼                  ▼       │
+ │   ┌──────────────┐   ┌──────────────┐   ┌────────────┐ │
+ │   │ Gemini LLM   │   │  Embedding   │   │  Incident  │ │
+ │   │ (Extraction) │   │ (text-emb-04)│   │ Clustering │ │
+ │   └──────────────┘   └──────────────┘   └──────┬─────┘ │
+ └─────────────────────────────┬──────────────────┼───────┘
+                               │                  │
+                               ▼                  ▼
+                       ┌──────────────┐   ┌──────────────┐
+                       │ PostgreSQL   │   │  Qdrant DB   │
+                       │ (Relational) │   │ (Vector Sim) │
+                       └──────────────┘   └──────────────┘
+```
+
+### 1. Unified 10-Stage AI Pipeline
+* **Ingestion:** Raw text or speech inputs are received.
+* **Translation & Extraction:** Using **Gemini 1.5 Flash** with custom JSON schema prompt constraints to extract structured attributes: `issue`, `department`, `location`, `priority`, and `summary`.
+* **Semantic Vector Embedding:** Text is converted to a 768-dimensional vector using Google's **`text-embedding-004`** model.
+* **Vector Similarity Database:** Embeddings are cross-referenced in **Qdrant** using Cosine similarity.
+* **Deduplication Engine:** If a new complaint shares high vector similarity (>= 0.82) with an existing incident in proximity, it is automatically grouped. If not, a new `Incident` is generated.
+* **Persistence:** Complaints are bound via foreign keys to Incidents and persisted in **PostgreSQL**.
+
+### 2. Database Models (`SQLAlchemy`)
+* **`Complaint` (`complaints` table):** Tracks citizen inputs, raw text, image references, and extracted metadata JSON. Linked via a foreign key relation to an `Incident`.
+* **`Incident` (`incidents` table):** Represents a master cluster containing summary, department routing classification, consolidated priority, location, and references to all child complaints.
+
+---
+
+## 🔒 Security Architecture
+
+UrbanMind AI is hardened with multiple layers of defense-in-depth measures to protect system endpoints and data:
+
+1. **Security Headers Middleware ([security.py](file:///d:/Project/NagarDrishti/app/middleware/security.py)):**
+   - **Clickjacking Protection:** Injects `X-Frame-Options: DENY` preventing unauthorized sites from embedding the platform in iframe tags.
+   - **XSS Mitigation:** Configures strict `Content-Security-Policy` and `X-XSS-Protection` to block inline script injection and malicious external resources.
+   - **MIME Sniffing Prevention:** Injects `X-Content-Type-Options: nosniff`.
+   - **Transport Security:** Forces HSTS (`Strict-Transport-Security`).
+
+2. **Rate Limiting Middleware ([rate_limit.py](file:///d:/Project/NagarDrishti/app/middleware/rate_limit.py)):**
+   - Implements an IP-based sliding-window rate limiter.
+   - Restricts clients to a configurable limit (default: **100 requests per 60 seconds**) preventing brute-force attacks and denial-of-service attempts.
+
+3. **API Key Authentication ([auth.py](file:///d:/Project/NagarDrishti/app/dependencies/auth.py)):**
+   - Standard citizen submission endpoints remain public.
+   - Administrative dashboards and officer endpoints (e.g. retrieving incidents/analytics) are locked behind key verification via custom `X-API-Key` headers matching `OFFICER_API_KEY` defined securely in `.env`.
+
+---
+
+## 💬 Interview Preparation (Expert Q&A)
+
+If asked about the details of this implementation in a technical review, use these points to defend the architecture:
+
+<details>
+<summary><b>Q1: Why did you split database persistence between PostgreSQL and Qdrant?</b></summary>
+<blockquote>
+We use <b>PostgreSQL</b> as our relational source of truth because it guarantees transactional consistency (ACID), handles referential integrity (e.g. cascading updates from Incidents to raw Complaints), and allows complex SQL joins for analytics. We use <b>Qdrant</b> strictly for high-dimensional vector search, index clustering, and spatial querying. Storing heavy vector profiles inside Postgres (even with pgvector) increases memory overhead and locks up relational databases under high load.
+</blockquote>
+</details>
+
+<details>
+<summary><b>Q2: How does the deduplication threshold work? What if two similar issues occur in different wards?</b></summary>
+<blockquote>
+Similarity search is not solely global. When querying Qdrant, we retrieve similar complaint records using cosine distance matching against the new complaint's text embedding. We then filter results by geographical coordinates or Ward location metadata. A complaint is only merged into an incident if both the <b>semantic score is above the threshold (0.82)</b> and the <b>locations match</b>, preventing tickets in opposite sides of the city from merging incorrectly.
+</blockquote>
+</details>
+
+<details>
+<summary><b>Q3: Why use custom FastAPI middlewares instead of Nginx or external reverse proxy controls?</b></summary>
+<blockquote>
+Implementing security headers and rate limiting at the application middleware level guarantees safety out-of-the-box in developer environments and cloud containers without requiring specialized proxy settings. It makes our containerized app <b>portable</b>. In production environments, these can be complemented by cloud load balancers or Cloudflare, acting as defense-in-depth layers.
+</blockquote>
+</details>
+
+<details>
+<summary><b>Q4: How does the Gemini extraction schema validation prevent malformed LLM responses?</b></summary>
+<blockquote>
+We pass our Pydantic validation schema definitions directly to the Gemini API prompts. Additionally, the backend service uses Pydantic <code>TypeAdapter.validate_json()</code> on the response string. If the response contains markdown backticks or missing properties, our parser cleans the text and validates structure. If validation fails, it defaults to routing the raw complain text to a manual review queue, preserving reliability.
+</blockquote>
+</details>

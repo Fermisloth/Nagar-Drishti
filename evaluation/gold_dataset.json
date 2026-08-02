@@ -1,0 +1,26 @@
+[
+  {
+    "id": "gold_001",
+    "raw_text": "There is a massive water leak near MG Road Metro station causing severe road flooding.",
+    "expected_department": "Water Supply & Sewage",
+    "expected_issue_type": "Water Leakage",
+    "expected_priority": "Medium",
+    "expected_location": "MG Road Metro Station"
+  },
+  {
+    "id": "gold_002",
+    "raw_text": "Heavy garbage dumping in front of Ward 42 community center creating terrible smell.",
+    "expected_department": "Sanitation & Waste",
+    "expected_issue_type": "Garbage Dumping",
+    "expected_priority": "Low",
+    "expected_location": "Ward 42 Community Center"
+  },
+  {
+    "id": "gold_003",
+    "raw_text": "Streetlights are completely dead on 5th Main Koramangala for past 3 days.",
+    "expected_department": "Electricity & Streetlights",
+    "expected_issue_type": "Streetlight Broken",
+    "expected_priority": "Low",
+    "expected_location": "5th Main Koramangala"
+  }
+]
