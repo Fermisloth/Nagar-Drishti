@@ -34,7 +34,12 @@ async def test_process_new_complaint_creates_new_incident():
         mock_metadata.model_dump.return_value = {"mock": "data"}
         
         MockGeminiService.extract_metadata = AsyncMock(return_value=mock_metadata)
-        MockGeminiService.generate_embedding = AsyncMock(return_value=[0.1] * 768)
+        MockGeminiService.generate_embedding = AsyncMock(return_value={
+            "vector": [0.1] * 768,
+            "embedding_model": "text-embedding-004",
+            "embedding_version": "v1",
+            "embedding_created_at": "2026-08-10T15:53:00"
+        })
         
         # Qdrant returns no matches
         MockVectorService.search_similar_complaints = MagicMock(return_value=[])
@@ -82,7 +87,12 @@ async def test_process_new_complaint_clusters_to_existing_incident():
         mock_metadata.model_dump.return_value = {"mock": "data"}
         
         MockGeminiService.extract_metadata = AsyncMock(return_value=mock_metadata)
-        MockGeminiService.generate_embedding = AsyncMock(return_value=[0.1] * 768)
+        MockGeminiService.generate_embedding = AsyncMock(return_value={
+            "vector": [0.1] * 768,
+            "embedding_model": "text-embedding-004",
+            "embedding_version": "v1",
+            "embedding_created_at": "2026-08-10T15:53:00"
+        })
         
         # Vector match found with high similarity score of 0.89
         MockVectorService.search_similar_complaints = MagicMock(return_value=[
@@ -94,11 +104,11 @@ async def test_process_new_complaint_clusters_to_existing_incident():
         
         # Mock finding the matched complaint and returning its incident
         matched_complaint_db = Complaint(id="matched-comp-123", incident_id="inc-999")
-        complaint_repo_instance.get = AsyncMock(return_value=matched_complaint_db)
+        complaint_repo_instance.get_by_id = AsyncMock(return_value=matched_complaint_db)
         
-        existing_incident_db = Incident(id="inc-999", title="Road Pothole MG Road")
+        existing_incident_db = Incident(id="inc-999", title="Road Pothole MG Road", department="Roads & Maintenance", priority="Low", location="MG Road")
         incident_repo_instance_mock = MockIncidentRepo.return_value
-        incident_repo_instance_mock.get = AsyncMock(return_value=existing_incident_db)
+        incident_repo_instance_mock.get_with_details = AsyncMock(return_value=existing_incident_db)
         
         complaint_repo_instance.create = AsyncMock(side_effect=lambda x: x)
         

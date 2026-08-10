@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 from app.schemas.complaint import ComplaintResponse
@@ -14,7 +14,7 @@ class IncidentResponse(BaseModel):
     duplicate_count: int = 1
     created_at: datetime
 
-    class Config:
+    class Config(ConfigDict):
         from_attributes = True
 
 class IncidentDetailResponse(IncidentResponse):

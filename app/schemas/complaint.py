@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, Dict, Any
 from datetime import datetime
 
@@ -23,5 +23,5 @@ class ComplaintResponse(BaseModel):
     extracted_metadata: Optional[Dict[str, Any]] = None
     created_at: datetime
 
-    class Config:
+    class Config(ConfigDict):
         from_attributes = True

@@ -48,12 +48,22 @@ app.add_middleware(SecurityHeadersMiddleware)
 # Apply Rate Limiter middleware (100 requests per 60 seconds)
 app.add_middleware(RateLimiterMiddleware, limit=100, window_seconds=60)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Configure CORS middleware dynamically based on settings
+if settings.CORS_ORIGINS and "*" in settings.CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS or [],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 app.include_router(api_router, prefix="/api/v1")

@@ -1,4 +1,4 @@
-import jwt
+from jose import JWTError, jwt
 import hashlib
 import os
 from datetime import datetime, timedelta

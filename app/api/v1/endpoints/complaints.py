@@ -5,6 +5,7 @@ from app.core.database import get_db
 from app.schemas.complaint import ComplaintCreate, ComplaintResponse
 from app.services.incident_service import IncidentService
 from app.utils.sanitizer import sanitize_input_text
+from app.dependencies.auth import require_roles, UserRole
 
 router = APIRouter()
 
@@ -35,7 +36,16 @@ async def submit_complaint(
 async def list_complaints(
     skip: int = 0,
     limit: int = 100,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(
+        require_roles(
+            [
+                UserRole.OFFICER,
+                UserRole.DEPARTMENT_ADMIN,
+                UserRole.SYSTEM_ADMIN,
+            ]
+        )
+    ),
 ):
     """Retrieve raw citizen complaints."""
     return await IncidentService.get_all_complaints(db, skip, limit)
@@ -43,7 +53,16 @@ async def list_complaints(
 @router.get("/{id}", response_model=ComplaintResponse)
 async def get_complaint(
     id: str,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(
+        require_roles(
+            [
+                UserRole.OFFICER,
+                UserRole.DEPARTMENT_ADMIN,
+                UserRole.SYSTEM_ADMIN,
+            ]
+        )
+    ),
 ):
     """Retrieve details of a single complaint."""
     complaint = await IncidentService.get_complaint(db, id)
@@ -53,3 +72,4 @@ async def get_complaint(
             detail=f"Complaint with ID {id} not found."
         )
     return complaint
+
