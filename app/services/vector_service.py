@@ -80,23 +80,35 @@ class VectorService:
         """
         try:
             client = self.get_client()
-            results = client.search(
-                collection_name=self.collection_name,
-                query_vector=vector,
-                limit=limit,
-                score_threshold=score_threshold
-            )
+            if hasattr(client, "query_points"):
+                response = client.query_points(
+                    collection_name=self.collection_name,
+                    query=vector,
+                    limit=limit,
+                    score_threshold=score_threshold
+                )
+                results = response.points
+            elif hasattr(client, "search"):
+                results = client.search(
+                    collection_name=self.collection_name,
+                    query_vector=vector,
+                    limit=limit,
+                    score_threshold=score_threshold
+                )
+            else:
+                results = []
             
             matches = []
             for res in results:
                 matches.append({
-                    "complaint_id": res.id,
+                    "complaint_id": str(res.id),
                     "score": res.score,
-                    "payload": res.payload
+                    "payload": res.payload or {}
                 })
             return matches
         except Exception as e:
             logger.error(f"Failed to query Qdrant search: {e}")
             return []
+
 
 vector_service = VectorService()
