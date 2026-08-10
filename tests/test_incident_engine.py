@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock
 from app.services.incident_engine import IncidentDecisionEngine
 from app.schemas.complaint import ExtractedComplaintMetadata
@@ -23,8 +23,9 @@ def test_incident_engine_department_mismatch_never_merges():
         issue_type="Streetlight Broken",
         priority="Low",
         location="MG Road",
-        created_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc)
     )
+
     
     # High similarity (0.95) should still FAIL because departments differ!
     should_merge, score, reason = engine.evaluate_merge_candidate(
@@ -55,8 +56,9 @@ def test_incident_engine_same_department_high_similarity_merges():
         issue_type="Water Leakage",
         priority="Medium",
         location="MG Road",
-        created_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc)
     )
+
     
     should_merge, score, reason = engine.evaluate_merge_candidate(
         new_metadata=new_meta,

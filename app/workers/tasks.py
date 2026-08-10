@@ -2,7 +2,7 @@ import asyncio
 from app.tasks.celery_app import celery_app
 import logging
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 @celery_app.task(name="async_process_complaint_task")
 def async_process_complaint_task(complaint_text: str, location: str = None):

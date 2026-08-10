@@ -14,7 +14,7 @@ import app.models
 import logging
 
 configure_logging("INFO")
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

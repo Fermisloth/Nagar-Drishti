@@ -11,7 +11,7 @@ from app.schemas.complaint import ComplaintCreate
 import uuid
 import logging
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 class IncidentService:
     @staticmethod

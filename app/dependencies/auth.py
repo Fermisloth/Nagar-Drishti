@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import List, Optional
 from uuid import UUID
 
@@ -11,13 +10,10 @@ from app.core.database import get_db
 from app.core.security import decode_token
 from app.models.user import User
 from app.enums.account_status import AccountStatus
+from app.enums.user_role import UserRole  # Single canonical source of truth
 
-
-class UserRole(str, Enum):
-    CITIZEN = "Citizen"
-    OFFICER = "Officer"
-    DEPARTMENT_ADMIN = "DepartmentAdmin"
-    SYSTEM_ADMIN = "SystemAdmin"
+# Re-export UserRole so existing imports from app.dependencies.auth continue to work
+__all__ = ["UserRole", "get_current_user", "require_roles"]
 
 
 security_bearer = HTTPBearer(auto_error=False)

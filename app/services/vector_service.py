@@ -6,7 +6,7 @@ from app.exceptions.base import VectorStoreException
 import logging
 import time
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 class VectorService:
     def __init__(self):

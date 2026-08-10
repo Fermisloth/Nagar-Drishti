@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.schemas.complaint import ExtractedComplaintMetadata
 from app.exceptions.base import AIException
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 DEPARTMENTS = {
     "water": ("Water Supply & Sewage", "Water Leakage", "Medium"),

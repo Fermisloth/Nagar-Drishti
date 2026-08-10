@@ -8,8 +8,9 @@ from app.middleware.correlation import get_correlation_id
 class JsonFormatter(logging.Formatter):
     """Custom logging Formatter that outputs logs in JSON format."""
     def format(self, record: logging.LogRecord) -> str:
+        from datetime import timezone
         log_data = {
-            "timestamp": datetime.utcfromtimestamp(record.created).isoformat() + "Z",
+            "timestamp": datetime.fromtimestamp(record.created, timezone.utc).isoformat().replace("+00:00", "Z"),
             "level": record.levelname,
             "logger": record.name,
             "correlation_id": get_correlation_id(),
@@ -30,7 +31,7 @@ class JsonFormatter(logging.Formatter):
         return json.dumps(log_data)
 
 def configure_logging(level: str = "INFO"):
-    logger = logging.getLogger("urbanmind")
+    logger = logging.getLogger("nagardrishti")
     logger.setLevel(level)
     
     # Avoid duplicate handlers
@@ -39,3 +40,4 @@ def configure_logging(level: str = "INFO"):
         handler.setFormatter(JsonFormatter())
         logger.addHandler(handler)
         logger.propagate = False
+

@@ -6,7 +6,7 @@ from app.core.database import Base
 from app.exceptions.base import RepositoryException
 import logging
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 ModelType = TypeVar("ModelType", bound=Base)
 
 class BaseRepository(Generic[ModelType]):
@@ -21,7 +21,7 @@ class BaseRepository(Generic[ModelType]):
             await self.db.flush()
             return obj_in
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             logger.error(f"Error during create operation on {model_name}: {e}")
             raise RepositoryException(f"Create failed for {model_name}", e)
 
@@ -35,7 +35,7 @@ class BaseRepository(Generic[ModelType]):
                 return None
             return obj
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             logger.error(f"Error during get_by_id on {model_name}: {e}")
             raise RepositoryException(f"Retrieve by ID failed for {model_name}", e)
 
@@ -48,7 +48,7 @@ class BaseRepository(Generic[ModelType]):
             result = await self.db.execute(query.offset(skip).limit(limit))
             return result.scalars().all()
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Retrieve all failed for {model_name}", e)
 
     async def exists(self, id: Any) -> bool:
@@ -60,7 +60,7 @@ class BaseRepository(Generic[ModelType]):
             result = await self.db.execute(query)
             return result.scalar() > 0
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Check existence failed for {model_name}", e)
 
     async def update(self, db_obj: ModelType, obj_in: dict) -> ModelType:
@@ -89,7 +89,7 @@ class BaseRepository(Generic[ModelType]):
         except RepositoryException:
             raise
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             logger.error(f"Error during update on {model_name}: {e}")
             raise RepositoryException(f"Update failed for {model_name}", e)
 
@@ -102,7 +102,7 @@ class BaseRepository(Generic[ModelType]):
                 await self.db.flush()
             return obj
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Hard delete failed for {model_name}", e)
 
     async def soft_delete(self, id: Any) -> bool:
@@ -116,7 +116,7 @@ class BaseRepository(Generic[ModelType]):
                 return True
             return False
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Soft delete failed for {model_name}", e)
 
     async def bulk_insert(self, objs: List[ModelType]) -> List[ModelType]:
@@ -126,7 +126,7 @@ class BaseRepository(Generic[ModelType]):
             await self.db.flush()
             return objs
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             logger.error(f"Bulk insert error on {model_name}: {e}")
             raise RepositoryException(f"Bulk insert failed for {model_name}", e)
 
@@ -142,7 +142,7 @@ class BaseRepository(Generic[ModelType]):
             result = await self.db.execute(query)
             return result.scalar() or 0
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Count query failed for {model_name}", e)
 
     async def paginate(self, page: int = 1, page_size: int = 20, **filters) -> Tuple[List[ModelType], int]:
@@ -166,7 +166,7 @@ class BaseRepository(Generic[ModelType]):
             
             return items, total_count
         except Exception as e:
-            model_name = getattr(self.model, "__name__", self.model.__class__.__name__)
+            model_name = getattr(self.model, "__name__", getattr(self.model.__class__, "__name__", "Model"))
             raise RepositoryException(f"Pagination query failed for {model_name}", e)
 
     async def begin_transaction(self):

@@ -3,7 +3,7 @@ from qdrant_client.http.models import Distance, VectorParams
 from app.core.config import settings
 import logging
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 class QdrantStorage:
     def __init__(self):

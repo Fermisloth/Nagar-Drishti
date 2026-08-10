@@ -1,7 +1,7 @@
 from jose import JWTError, jwt
 import hashlib
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
 from app.core.config import settings
 from app.exceptions.base import SecurityException
@@ -39,14 +39,14 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Generate JWT Access Token."""
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire, "type": "access"})
     return jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=ALGORITHM)
 
 def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Generate JWT Refresh Token."""
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS))
     to_encode.update({"exp": expire, "type": "refresh"})
     return jwt.encode(to_encode, settings.JWT_REFRESH_SECRET_KEY, algorithm=ALGORITHM)
 
@@ -58,5 +58,5 @@ def decode_token(token: str, is_refresh: bool = False) -> Dict[str, Any]:
         return payload
     except jwt.ExpiredSignatureError:
         raise SecurityException("Token has expired.", status_code=401)
-    except jwt.InvalidTokenError:
-        raise SecurityException("Invalid token provided.", status_code=401)
+    except JWTError as e:
+        raise SecurityException(f"Invalid token provided: {str(e)}", status_code=401)

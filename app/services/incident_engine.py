@@ -1,11 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any, Tuple
 from app.models.incident import Incident
 from app.schemas.complaint import ExtractedComplaintMetadata
 from app.core.config import settings
 import logging
 
-logger = logging.getLogger("urbanmind")
+logger = logging.getLogger("nagardrishti")
 
 class IncidentDecisionEngine:
     def __init__(
@@ -48,7 +48,11 @@ class IncidentDecisionEngine:
 
         # Guardrail 2: Recency Check
         if existing_incident.created_at:
-            age_days = (datetime.utcnow() - existing_incident.created_at.replace(tzinfo=None)).days
+            # Ensure the comparison is timezone-aware
+            created = existing_incident.created_at
+            if created.tzinfo is None:
+                created = created.replace(tzinfo=timezone.utc)
+            age_days = (datetime.now(timezone.utc) - created).days
             if age_days > settings.DECISION_RECENCY_DAYS_THRESHOLD:
                 return False, 0.0, f"Incident {existing_incident.id} exceeds max recency threshold ({age_days} days old)."
 

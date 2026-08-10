@@ -4,7 +4,7 @@ from typing import List, Optional
 import os
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "UrbanMind AI"
+    PROJECT_NAME: str = "NagarDrishti AI"
     ENV: str = "development"
     PORT: int = 8000
 
