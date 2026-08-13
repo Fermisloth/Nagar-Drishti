@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400..800;1,400..800&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+
+:root {
+  /* Neo-Brutalist Color Palette */
+  --bg-dark: #09090b;
+  --bg-card: #18181b;
+  --bg-surface: #27272a;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  
+  /* Neo-Brutalist Accent Colors */
+  --accent-ai: #22d3ee;        /* Electric Cyan */
+  --accent-citizen: #facc15;   /* Cyber Yellow */
+  --accent-emergency: #f43f5e; /* Neon Crimson */
+  --accent-warning: #f97316;   /* Vivid Amber */
+  --accent-success: #a3e635;   /* Electric Lime */
+  --accent-purple: #c084fc;    /* Electric Purple */
+  
+  /* Brutalist Geometry & Strokes */
+  --border-width: 3px;
+  --border-color: #000000;
+  --border-light: #3f3f46;
+  --shadow-offset: 4px 4px 0px #000000;
+  --shadow-offset-sm: 2px 2px 0px #000000;
+  --shadow-offset-lg: 6px 6px 0px #000000;
+  --shadow-offset-cyan: 4px 4px 0px #22d3ee;
+  --shadow-offset-yellow: 4px 4px 0px #facc15;
+  
+  /* Typography Stacks */
+  --font-header: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+  border-left: 2px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-ai);
+  border: 2px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-citizen);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}

@@ -65,5 +65,7 @@ async def metrics():
         "app_uptime_seconds": round(time.time() - START_TIME, 2),
         "prompt_version": settings.PROMPT_VERSION,
         "embedding_model": settings.EMBEDDING_MODEL,
-        "decision_threshold": settings.DECISION_SIMILARITY_THRESHOLD
+        "embedding_dimensions": 768,
+        "decision_threshold": settings.DECISION_SIMILARITY_THRESHOLD,
+        "llm_model": settings.GEMINI_GENERATION_MODEL
     }
