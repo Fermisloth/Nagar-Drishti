@@ -65,37 +65,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
           Select 1-click access role for evaluator preview or test strict government RBAC navigation.
         </p>
 
-        {/* 1-Click Action Buttons */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
-          <button 
-            type="button" 
-            onClick={handleEvaluatorQuickLogin} 
-            className="neo-btn" 
-            style={{ padding: '0.75rem', fontSize: '0.95rem', justifyContent: 'center', background: 'var(--accent-purple)', color: '#000' }}
-          >
-            <Compass size={18} /> 1-CLICK EVALUATOR MODE (FULL SYSTEM ACCESS)
-          </button>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-            <button 
-              type="button" 
-              onClick={handleOfficerQuickLogin} 
-              className="neo-btn neo-btn-primary" 
-              style={{ padding: '0.65rem', fontSize: '0.85rem', justifyContent: 'center' }}
-            >
-              <ShieldAlert size={16} /> OFFICER ROLE
-            </button>
-
-            <button 
-              type="button" 
-              onClick={handleCitizenQuickLogin} 
-              className="neo-btn neo-btn-ai" 
-              style={{ padding: '0.65rem', fontSize: '0.85rem', justifyContent: 'center' }}
-            >
-              <HeartHandshake size={16} /> CITIZEN ROLE
-            </button>
-          </div>
-        </div>
+        {/* 1-Click Action Buttons removed for security audit */}
 
         {/* Advanced Developer Mode Accordion */}
         <details style={{ background: 'var(--bg-dark)', border: '2px solid var(--border-color)', padding: '0.75rem 1rem' }}>

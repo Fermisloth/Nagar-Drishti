@@ -19,6 +19,21 @@ apiClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      // Clear all auth state on 401/403
+      localStorage.removeItem('nagardrishti_token');
+      localStorage.removeItem('nagardrishti_role');
+      localStorage.removeItem('nagardrishti_username');
+      // Trigger a page reload to reset the application state to default
+      window.location.reload();
+    }
+    return Promise.reject(error);
+  }
+);
+
 export interface ComplaintCreate {
   raw_text: string;
   location?: string;
@@ -134,24 +149,12 @@ export const api = {
   },
 
   getSystemMetrics: async (): Promise<SystemMetricsResponse> => {
-    try {
-      const { data } = await apiClient.get<SystemMetricsResponse>('/metrics');
-      return {
-        ...data,
-        embedding_dimensions: data.embedding_dimensions || 768,
-        llm_model: data.llm_model || 'gemini-1.5-flash'
-      };
-    } catch (e) {
-      // Sensible fallback configuration metrics
-      return {
-        app_uptime_seconds: 88200,
-        prompt_version: 'v2.4-json-constrained',
-        embedding_model: 'text-embedding-004',
-        embedding_dimensions: 768,
-        decision_threshold: 0.82,
-        llm_model: 'gemini-1.5-flash'
-      };
-    }
+    const { data } = await apiClient.get<SystemMetricsResponse>('/metrics');
+    return {
+      ...data,
+      embedding_dimensions: data.embedding_dimensions || 768,
+      llm_model: data.llm_model || 'gemini-1.5-flash'
+    };
   }
 };
 

@@ -28,10 +28,11 @@ export const HealthMonitor: React.FC = () => {
 
   return (
     <div>
-      {/* Top Marquee Banner */}
-      <div className="neo-banner" style={{ background: 'var(--accent-ai)', color: '#000' }}>
-        <span>SYSTEM HEALTH & PIPELINE TELEMETRY</span>
-        <span>FASTAPI // QDRANT VECTOR DB // GEMINI 1.5 FLASH // POSTGRESQL</span>
+      {/* Top Banner */}
+      <div className="banner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>System Health & Status</span>
+        </div>
       </div>
 
       {/* Node Status Map */}

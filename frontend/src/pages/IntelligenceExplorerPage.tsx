@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import { Cpu, Play, Sparkles, Database } from 'lucide-react';
-import { NeoCard } from '../components/common/NeoCard';
-import { NeoButton } from '../components/common/NeoButton';
-import { NeoBadge } from '../components/common/NeoBadge';
-import { PipelineDecisionFlow } from '../components/intelligence/PipelineDecisionFlow';
-import { SimilarityResultCard } from '../components/intelligence/SimilarityResultCard';
-import { IncidentMergeVisualizer } from '../components/intelligence/IncidentMergeVisualizer';
+import { Cpu, Play, Search, Database } from 'lucide-react';
 
 const PRESET_SAMPLES = [
   {
@@ -45,31 +39,30 @@ export const IntelligenceExplorerPage: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-      {/* Top Marquee Banner */}
-      <div className="neo-banner" style={{ background: 'var(--accent-purple)', color: '#000' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <NeoBadge variant="simulated">EXPLAINABILITY ARCHITECTURE MODEL</NeoBadge>
-          <span>SIGNATURE AI EXPLAINABILITY & PIPELINE TRACER</span>
+      <div className="banner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Cpu size={20} />
+          <span>System Analytics & Deduplication Engine</span>
         </div>
-        <span>NO HIDDEN AI BLACK BOXES // REASONING TRACEABILITY</span>
+        <span>Administrative Workspace</span>
       </div>
 
-      <NeoCard variant="cyan" style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Cpu style={{ color: 'var(--accent-ai)' }} size={24} />
-            <h2 style={{ fontSize: '1.4rem' }}>EXPLAINABLE AI PIPELINE ARCHITECTURE</h2>
+      <div className="card" style={{ marginBottom: '32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Search style={{ color: 'var(--primary)' }} size={24} />
+            <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Incident Deduplication Logic</h2>
           </div>
-          <NeoBadge variant="purple">GEMINI 1.5 + QDRANT 768-D</NeoBadge>
+          <span className="badge badge-primary">System Analytics</span>
         </div>
 
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
-          This visualizer demonstrates the <strong>NagarDrishti 5-Stage Decision Architecture</strong>. Select a sample scenario or enter custom text to see how our pipeline normalizes inputs, extracts metadata, generates 768-D embeddings, evaluates Qdrant Cosine distance, and executes deduplication rules.
+        <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '20px' }}>
+          Test the deduplication logic by selecting a sample complaint or entering custom text. This demonstrates how incoming complaints are matched and merged into master incidents.
         </p>
 
         {/* Preset Sample Selectors */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-          <span className="neo-stat-label" style={{ display: 'flex', alignItems: 'center', marginBottom: 0 }}>PRESET SCENARIOS:</span>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', marginRight: '8px' }}>SAMPLES:</span>
           {PRESET_SAMPLES.map((sample, idx) => (
             <button
               key={idx}
@@ -77,8 +70,8 @@ export const IntelligenceExplorerPage: React.FC = () => {
                 setSelectedSample(sample);
                 setCustomText(sample.text);
               }}
-              className={`neo-btn ${selectedSample.text === sample.text ? 'neo-btn-ai' : ''}`}
-              style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem' }}
+              className={`btn ${selectedSample.text === sample.text ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '12px', padding: '6px 12px' }}
             >
               Scenario #{idx + 1}: {sample.dept}
             </button>
@@ -86,91 +79,55 @@ export const IntelligenceExplorerPage: React.FC = () => {
         </div>
 
         {/* Input Box */}
-        <div style={{ marginBottom: '1.25rem' }}>
+        <div style={{ marginBottom: '20px' }}>
           <textarea
-            className="neo-textarea"
+            className="form-textarea"
             value={customText}
             onChange={(e) => setCustomText(e.target.value)}
-            placeholder="Type a municipal complaint string to run through the AI pipeline architecture..."
+            placeholder="Type a municipal complaint..."
           />
         </div>
 
-        <NeoButton
-          variant="ai"
+        <button
+          className="btn btn-primary"
           onClick={handleRunSimulation}
           disabled={isSimulating}
-          style={{ width: '100%', justifyContent: 'center', fontSize: '1rem', padding: '0.75rem' }}
+          style={{ width: '100%', justifyContent: 'center', fontSize: '16px', padding: '12px' }}
         >
           <Play size={18} />
-          {isSimulating ? 'SIMULATING PIPELINE REASONING FLOW...' : 'RUN PIPELINE REASONING SIMULATION'}
-        </NeoButton>
-      </NeoCard>
+          {isSimulating ? 'Processing...' : 'Test Deduplication Flow'}
+        </button>
+      </div>
 
-      {/* Interactive Pipeline Decision Flow Chart */}
-      <NeoCard style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.75rem' }}>
-          <div>
-            <h3 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Sparkles size={20} style={{ color: 'var(--accent-ai)' }} />
-              DECISION ENGINE ARCHITECTURE MODEL
-            </h3>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-              Detailed stage breakdown: Input Source ➔ Processing Method ➔ Output Produced
-            </span>
-          </div>
-          <NeoBadge variant="simulated">ILLUSTRATIVE MODEL</NeoBadge>
-        </div>
-
-        <PipelineDecisionFlow
-          rawText={customText}
-          extractedDepartment={selectedSample.dept}
-          extractedPriority={selectedSample.priority}
-          matchedIncidentId={selectedSample.incidentId}
-          similarityScore={selectedSample.score}
-        />
-      </NeoCard>
-
-      {/* Vector Similarity Search Breakdown Cards */}
-      <NeoCard variant="yellow" style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Database size={20} style={{ color: 'var(--accent-citizen)' }} />
-            <h3>ILLUSTRATIVE QDRANT SIMILARITY MATRIX</h3>
-          </div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <NeoBadge variant="demo">DEMO MATRIX</NeoBadge>
-            <NeoBadge variant="lime">COSINE CUTOFF THRESHOLD = 0.82</NeoBadge>
+      <div className="card" style={{ marginBottom: '32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Database size={20} style={{ color: 'var(--primary)' }} />
+            <h3 style={{ fontSize: '1.1rem', margin: 0 }}>Similarity Results</h3>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <SimilarityResultCard
-            id="COMP-901A"
-            rawText="Water main burst near Sector 15 market entrance. Flooding street."
-            score={selectedSample.score}
-            threshold={0.82}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '16px', background: 'var(--bg-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <strong>COMP-901A</strong>
+              <span className="badge badge-success">Match Score: {selectedSample.score}</span>
+            </div>
+            <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>Water main burst near Sector 15 market entrance. Flooding street.</p>
+          </div>
 
-          <SimilarityResultCard
-            id="COMP-901B"
-            rawText="Heavy water leak outside shop 42 in Sector 15. Vehicles getting stuck."
-            score={selectedSample.score - 0.03}
-            threshold={0.82}
-          />
-
-          <SimilarityResultCard
-            id="COMP-704 (Different Ward)"
-            rawText="Water pressure low in Sector 22 residential apartments."
-            score={0.48}
-            threshold={0.82}
-          />
+          <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '16px', background: 'var(--bg-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <strong>COMP-901B</strong>
+              <span className="badge badge-success">Match Score: {(selectedSample.score - 0.03).toFixed(2)}</span>
+            </div>
+            <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>Heavy water leak outside shop 42 in Sector 15. Vehicles getting stuck.</p>
+          </div>
         </div>
-      </NeoCard>
-
-      {/* Side-by-side Deduplication Visualizer */}
-      <IncidentMergeVisualizer />
+      </div>
     </div>
   );
 };
 
 export default IntelligenceExplorerPage;
+

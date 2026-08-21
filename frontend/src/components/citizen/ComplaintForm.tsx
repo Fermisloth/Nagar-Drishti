@@ -38,23 +38,7 @@ export const ComplaintForm: React.FC = () => {
       setImageUrl('');
     } catch (err: any) {
       console.error('Submission error:', err);
-      // Demo fallback if backend is offline/unreachable in local test
-      const mockFallback: ComplaintResponse = {
-        id: `mock-${Date.now()}`,
-        raw_text: rawText,
-        location: location || 'Sector 14, Main Road',
-        image_url: imageUrl || null,
-        incident_id: 'inc-demo-892',
-        extracted_metadata: {
-          department: 'Water Supply & Sewerage',
-          issue_type: 'Pipeline Burst / Flooding',
-          priority: 'HIGH',
-          location: location || 'Sector 14, Main Road',
-          summary: 'Severe water leakage reported creating flooding near main traffic intersection.'
-        },
-        created_at: new Date().toISOString()
-      };
-      setSubmittedComplaint(mockFallback);
+      setError('Unable to reach the server to submit your complaint. Please try again later.');
     } finally {
       setLoading(false);
     }

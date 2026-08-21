@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import './assets/styles/brutalism.css';
-import './assets/styles/components.css';
 import { BrutalistNavbar, type ActivePage } from './components/layout/BrutalistNavbar';
 import { LoginModal } from './components/layout/LoginModal';
 import CitizenPortal from './pages/CitizenPortal';
@@ -11,17 +9,17 @@ import { api, type UserRole } from './api/api';
 
 const ROLE_PERMISSIONS: Record<UserRole, ActivePage[]> = {
   CITIZEN: ['citizen'],
-  OFFICER: ['officer', 'intelligence'],
+  OFFICER: ['officer', 'intelligence', 'health'],
   ADMIN: ['citizen', 'officer', 'intelligence', 'health'],
   EVALUATOR: ['citizen', 'officer', 'intelligence', 'health']
 };
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<ActivePage>('officer');
-  const [userRole, setUserRole] = useState<UserRole>('OFFICER');
-  const [username, setUsername] = useState('Municipal Officer');
+  const [currentPage, setCurrentPage] = useState<ActivePage>('citizen');
+  const [userRole, setUserRole] = useState<UserRole>('CITIZEN');
+  const [username, setUsername] = useState('');
   // Default is Evaluator Mode OFF -> STRICT RBAC BY DEFAULT
-  const [isEvaluatorMode, setIsEvaluatorMode] = useState(false);
+  const [isEvaluatorMode] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -54,20 +52,6 @@ function App() {
     }
   };
 
-  const handleToggleEvaluatorMode = () => {
-    setIsEvaluatorMode(prev => {
-      const nextMode = !prev;
-      // If toggling strict RBAC ON (isEvaluatorMode becomes false), ensure current page is allowed
-      if (!nextMode) {
-        const allowed = ROLE_PERMISSIONS[userRole] || ['citizen'];
-        if (!allowed.includes(currentPage)) {
-          setCurrentPage(allowed[0]);
-        }
-      }
-      return nextMode;
-    });
-  };
-
   return (
     <div className="app-viewport">
       {/* Neo-Brutalist Navbar */}
@@ -77,7 +61,6 @@ function App() {
         userRole={userRole}
         username={username}
         isEvaluatorMode={isEvaluatorMode}
-        onToggleEvaluatorMode={handleToggleEvaluatorMode}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
       />
 

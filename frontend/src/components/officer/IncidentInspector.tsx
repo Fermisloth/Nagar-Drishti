@@ -25,49 +25,8 @@ export const IncidentInspector: React.FC<IncidentInspectorProps> = ({ incidentId
         setIsLiveApi(true);
       })
       .catch((err) => {
-        console.warn('Error fetching incident details from backend, displaying fallback data:', err);
-        setIsLiveApi(false);
-        // Fallback mock detail for offline/demo mode
-        setDetail({
-          id: incidentId,
-          title: 'Critical Main Sewerage Overflow & Road Inundation',
-          department: 'Water Supply & Sewerage',
-          issue_type: 'Pipeline Burst',
-          priority: 'EMERGENCY',
-          location: 'Sector 15 Market, Main Arterial Road',
-          summary: 'Consolidated report from 14 citizens regarding a major 24-inch water main breach flooding traffic lanes and nearby shops.',
-          created_at: new Date().toISOString(),
-          duplicate_count: 14,
-          complaints: [
-            {
-              id: 'comp-101',
-              raw_text: 'The water pipe exploded near sector 15 main market. Water is filling the road fast!',
-              location: 'Sector 15 Main Market',
-              image_url: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0',
-              incident_id: incidentId,
-              extracted_metadata: { priority: 'EMERGENCY', department: 'Water Supply & Sewerage' },
-              created_at: new Date(Date.now() - 3600000).toISOString()
-            },
-            {
-              id: 'comp-102',
-              raw_text: 'Huge water leakage outside shop #42 in sector 15. Vehicles getting stuck.',
-              location: 'Sector 15, Shop #42',
-              image_url: null,
-              incident_id: incidentId,
-              extracted_metadata: { priority: 'HIGH', department: 'Water Supply & Sewerage' },
-              created_at: new Date(Date.now() - 7200000).toISOString()
-            },
-            {
-              id: 'comp-103',
-              raw_text: 'Sewage/water flooding road in sector 15 near market area.',
-              location: 'Sector 15',
-              image_url: null,
-              incident_id: incidentId,
-              extracted_metadata: { priority: 'HIGH', department: 'Water Supply & Sewerage' },
-              created_at: new Date(Date.now() - 10800000).toISOString()
-            }
-          ]
-        });
+        console.error('Error fetching incident details from backend:', err);
+        setDetail(null);
       })
       .finally(() => setLoading(false));
   }, [incidentId]);

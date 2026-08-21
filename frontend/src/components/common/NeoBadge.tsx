@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type NeoBadgeVariant = 'cyan' | 'yellow' | 'lime' | 'rose' | 'amber' | 'purple' | 'dark' | 'live' | 'simulated' | 'demo';
+export type NeoBadgeVariant = 'cyan' | 'yellow' | 'lime' | 'rose' | 'amber' | 'purple' | 'dark' | 'live' | 'simulated' | 'demo' | 'primary' | 'danger' | 'warning' | 'success';
 
 interface NeoBadgeProps {
   children: React.ReactNode;
