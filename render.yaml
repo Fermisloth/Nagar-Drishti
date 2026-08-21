@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: nagardrishti-backend
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/v1/ready
+    envVars:
+      - key: POSTGRES_USER
+        description: PostgreSQL user
+      - key: POSTGRES_PASSWORD
+        description: PostgreSQL password
+      - key: POSTGRES_SERVER
+        description: PostgreSQL host
+      - key: POSTGRES_PORT
+        description: PostgreSQL port (default 5432)
+      - key: POSTGRES_DB
+        description: PostgreSQL database name
+      - key: QDRANT_HOST
+        description: Qdrant host
+      - key: QDRANT_PORT
+        description: Qdrant port (default 6333)
+      - key: QDRANT_COLLECTION_NAME
+        description: Qdrant collection name
+      - key: GEMINI_API_KEY
+        description: Gemini API key
+      - key: JWT_SECRET_KEY
+        description: JWT secret
+      - key: JWT_REFRESH_SECRET_KEY
+        description: JWT refresh secret
+      - key: CORS_ORIGINS
+        description: Allowed origins for CORS (comma-separated list)
+  - type: static
+    name: nagardrishti-frontend
+    env: static
+    region: oregon
+    buildCommand: npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        description: Base URL of the backend API (e.g., https://nagardrishti-backend.onrender.com)
