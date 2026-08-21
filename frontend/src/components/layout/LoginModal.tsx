@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Key, X, ShieldAlert, HeartHandshake, ChevronDown, CheckCircle2, Compass } from 'lucide-react';
+import { Key, X, ShieldAlert, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { api, type UserRole } from '../../api/api';
 
 interface LoginModalProps {
@@ -14,27 +14,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
   const [usernameInput, setUsernameInput] = useState('SIH Evaluator');
 
   if (!isOpen) return null;
-
-  const handleEvaluatorQuickLogin = () => {
-    const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo_evaluator_nagardrishti';
-    api.setToken(demoToken, 'EVALUATOR', 'SIH Evaluator Mode');
-    onLoginSuccess('EVALUATOR', 'SIH Evaluator Mode');
-    onClose();
-  };
-
-  const handleOfficerQuickLogin = () => {
-    const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo_officer_nagardrishti';
-    api.setToken(demoToken, 'OFFICER', 'Municipal Officer');
-    onLoginSuccess('OFFICER', 'Municipal Officer');
-    onClose();
-  };
-
-  const handleCitizenQuickLogin = () => {
-    const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo_citizen_nagardrishti';
-    api.setToken(demoToken, 'CITIZEN', 'Citizen User');
-    onLoginSuccess('CITIZEN', 'Citizen User');
-    onClose();
-  };
 
   const handleCustomTokenSubmit = (e: React.FormEvent) => {
     e.preventDefault();
